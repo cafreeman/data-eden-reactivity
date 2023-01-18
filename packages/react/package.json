@@ -1,0 +1,29 @@
+{
+  "name": "@data-eden/react",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rimraf dist && pnpm run build:types",
+    "build:types": "tsc -p tsconfig.build.json"
+  },
+  "keywords": [],
+  "author": "Chris Freeman",
+  "license": "ISC",
+  "dependencies": {
+    "@data-eden/reactivity": "workspace:*",
+    "@preact/signals-core": "^1.2.3"
+  },
+  "devDependencies": {
+    "@tsconfig/node-lts-strictest": "^18.12.1",
+    "rimraf": "^4.1.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0"
+  }
+}
