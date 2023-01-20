@@ -342,29 +342,29 @@ importers:
 
   packages/react-example:
     specifiers:
-      '@data-eden/cache': ^0.3.0
-      '@data-eden/network': ^0.3.0
+      '@data-eden/cache': ^0.3.2
+      '@data-eden/network': ^0.3.2
       '@data-eden/react': workspace:*
       '@preact/signals-react': ^1.2.2
       '@types/node': ^18.11.18
-      '@types/react': ^18.0.26
-      '@types/react-dom': ^18.0.9
+      '@types/react': ^18.0.27
+      '@types/react-dom': ^18.0.10
       '@vitejs/plugin-react': ^3.0.1
       miragejs: ^0.1.47
       react: ^18.2.0
       react-dom: ^18.2.0
-      typescript: ^4.9.3
-      vite: ^4.0.0
+      typescript: ^4.9.4
+      vite: ^4.0.4
     dependencies:
-      '@data-eden/cache': 0.3.0
-      '@data-eden/network': 0.3.0
+      '@data-eden/cache': 0.3.2
+      '@data-eden/network': 0.3.2
       '@data-eden/react': link:../react
       '@preact/signals-react': 1.2.2_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
       '@types/node': 18.11.18
-      '@types/react': 18.0.26
+      '@types/react': 18.0.27
       '@types/react-dom': 18.0.10
       '@vitejs/plugin-react': 3.0.1_vite@4.0.4
       miragejs: 0.1.47
@@ -1601,16 +1601,8 @@ packages:
     dev: true
     optional: true
 
-  /@data-eden/cache/0.3.0:
-    resolution: {integrity: sha512-95+TABa44ogeaK1vPj8kHIH2cBFpPK1Ok3+82A40SMwsalaTh4XMtpCFzCh5bz0AuSGXECqd4FF2fSgO1HAGnw==}
-    dev: false
-
   /@data-eden/cache/0.3.2:
     resolution: {integrity: sha512-zXn9J9tnge2EeXPX6aAgsJPwv+xeh2fnJU3OwhSTsYPlFfsCC/OaxCiTSPOOytaCfrt7jHVWF55qgvEEmG+LFQ==}
-    dev: false
-
-  /@data-eden/network/0.3.0:
-    resolution: {integrity: sha512-ZjSqMmciullP9I4p3f+EB1viqF3E/hm6UNgnwIfU8+1gnXGziyLVhXbLJSpuH6Sp2n0QkCjgYQ3P8ui4BTvVgQ==}
     dev: false
 
   /@data-eden/network/0.3.2:
@@ -2572,11 +2564,11 @@ packages:
   /@types/react-dom/18.0.10:
     resolution: {integrity: sha512-E42GW/JA4Qv15wQdqJq8DL4JhNpB3prJgjgapN3qJT9K2zO5IIAQh4VXvCEDupoqAwnz0cY4RlXeC/ajX5SFHg==}
     dependencies:
-      '@types/react': 18.0.26
+      '@types/react': 18.0.27
     dev: true
 
-  /@types/react/18.0.26:
-    resolution: {integrity: sha512-hCR3PJQsAIXyxhTNSiDFY//LhnMZWpNNr5etoCqx/iUfGc5gXWtQR2Phl908jVR6uPXacojQWTg4qRpkxTuGug==}
+  /@types/react/18.0.27:
+    resolution: {integrity: sha512-3vtRKHgVxu3Jp9t718R9BuzoD4NcQ8YJ5XRzsSKxNDiDonD2MXIT1TmSkenxuCycZJoQT5d2vE8LwWJxBC1gmA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
@@ -4346,7 +4338,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001445
+      caniuse-lite: 1.0.30001446
       electron-to-chromium: 1.4.284
       node-releases: 2.0.8
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -4480,6 +4472,10 @@ packages:
 
   /caniuse-lite/1.0.30001445:
     resolution: {integrity: sha512-8sdQIdMztYmzfTMO6KfLny878Ln9c2M0fc7EH60IjlP4Dc4PiCy7K2Vl3ITmWgOyPgVQKa5x+UP/KqFsxj4mBg==}
+    dev: true
+
+  /caniuse-lite/1.0.30001446:
+    resolution: {integrity: sha512-fEoga4PrImGcwUUGEol/PoFCSBnSkA9drgdkxXkJLsUBOnJ8rs3zDv6ApqYXGQFOyMPsjh79naWhF4DAxbF8rw==}
 
   /capture-exit/2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
@@ -10640,6 +10636,14 @@ packages:
       fsevents: 2.3.2
     dev: true
 
+  /rollup/3.10.1:
+    resolution: {integrity: sha512-3Er+yel3bZbZX1g2kjVM+FW+RUWDxbG87fcqFM5/9HbPCTpbVp6JOLn7jlxnNlbu7s/N/uDA4EV/91E2gWnxzw==}
+    engines: {node: '>=14.18.0', npm: '>=8.0.0'}
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
   /route-recognizer/0.3.4:
     resolution: {integrity: sha512-2+MhsfPhvauN1O8KaXpXAOfR/fwe8dnUXVM+xw7yt40lJRfPVQxV6yryZm0cgRvAj5fMF/mdRZbL2ptwbs5i2g==}
 
@@ -12079,7 +12083,7 @@ packages:
       esbuild: 0.16.17
       postcss: 8.4.21
       resolve: 1.22.1
-      rollup: 3.10.0
+      rollup: 3.10.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: true

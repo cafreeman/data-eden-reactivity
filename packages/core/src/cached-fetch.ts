@@ -1,4 +1,4 @@
-import type { buildCache } from '@data-eden/cache';
+import { buildCache } from '@data-eden/cache';
 import type { buildFetch } from '@data-eden/network';
 import type { ReactiveAdapter } from './adapter.js';
 
@@ -14,26 +14,19 @@ function getUrl(input: RequestInfo | URL): string {
   return input.toString();
 }
 
-const SIGNAL = Symbol('data-eden-signal');
-
 function createHandler(): ProxyHandler<any> {
   return {
     get(target, prop, receiver) {
-      const result = Reflect.get(target, prop, receiver);
-      if (prop !== SIGNAL) {
-        const s = target[SIGNAL];
-        s.read();
-      }
+      const value = target.read();
+      const result = Reflect.get(value, prop, receiver);
       return result;
     },
 
     set(target, prop, value) {
-      const result = Reflect.set(target, prop, value);
-      if (prop !== SIGNAL) {
-        console.log('writing signal');
-        const s = target[SIGNAL];
-        s.write(s.read() === 0 ? 1 : 0);
-      }
+      const innerValue = target.read();
+      const result = Reflect.set(innerValue, prop, value);
+      // shallow clone to trigger signal update based on reference equality. we can improve this in the future
+      target.write({ ...innerValue });
       return result;
     },
   };
@@ -41,12 +34,35 @@ function createHandler(): ProxyHandler<any> {
 
 interface CachedFetchArgs {
   fetch: ReturnType<typeof buildFetch>;
-  cache: ReturnType<typeof buildCache>;
   adapter: ReactiveAdapter;
 }
 
-export function buildCachedFetch({ fetch, cache, adapter }: CachedFetchArgs) {
+export function buildCachedFetch({ fetch, adapter }: CachedFetchArgs) {
   const SignalCache = new Map<string, any>();
+
+  const cache = buildCache({
+    hooks: {
+      async commit(tx) {
+        for await (let entry of tx.entries()) {
+          const [key, entity] = entry;
+          let withSignal = SignalCache.get(key);
+
+          // Entity can also be string | number so we need to make sure it's actually an object here
+          if (entity !== null && typeof entity === 'object') {
+            if (withSignal === undefined) {
+              console.log('entity', entity);
+              withSignal = new Proxy(adapter.create(entity), handler);
+
+              SignalCache.set(key, withSignal);
+            } else {
+              Object.assign(withSignal, entity);
+              console.log('withSignal', withSignal);
+            }
+          }
+        }
+      },
+    },
+  });
 
   const handler = createHandler();
 
@@ -58,23 +74,6 @@ export function buildCachedFetch({ fetch, cache, adapter }: CachedFetchArgs) {
     tx.set(key, res);
     await tx.commit();
 
-    const cacheResult = await cache.get(key);
-
-    let withSignal = SignalCache.get(key);
-
-    if (withSignal === undefined) {
-      const base = {
-        ...cacheResult,
-        [SIGNAL]: adapter.create(1),
-      };
-      withSignal = new Proxy(base, handler);
-
-      SignalCache.set(key, withSignal);
-    } else {
-      Object.assign(withSignal, cacheResult);
-      console.log('withSignal', withSignal);
-    }
-
-    return withSignal;
+    return SignalCache.get(key);
   };
 }

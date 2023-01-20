@@ -11,14 +11,6 @@ async function loggerMiddleware(
   return next(request);
 }
 
-const customFetch = buildFetch([loggerMiddleware], {
-  fetch: function (input, init) {
-    return globalThis.fetch(input, init);
-  },
-});
+const customFetch = buildFetch([loggerMiddleware]);
 
-const cache = buildCache();
-
-console.log(adapter);
-
-export const cachedFetch = buildCachedFetch({ fetch: customFetch, cache, adapter });
+export const cachedFetch = buildCachedFetch({ fetch: customFetch, adapter });
