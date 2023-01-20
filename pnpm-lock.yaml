@@ -48,7 +48,6 @@ importers:
       ember-source: ~4.9.1
       ember-source-channel-url: ^3.0.0
       ember-template-lint: ^5.2.0
-      ember-tracked-storage-polyfill: ^1.0.0
       ember-try: ^2.0.0
       eslint: ^7.32.0
       eslint-config-prettier: ^8.5.0
@@ -66,7 +65,6 @@ importers:
       '@data-eden/reactivity': link:../core
       ember-cli-babel: 7.26.11
       ember-cli-htmlbars: 6.2.0
-      ember-tracked-storage-polyfill: 1.0.0
     devDependencies:
       '@ember/optional-features': 2.0.0
       '@ember/test-helpers': 2.9.3_ember-source@4.9.3
@@ -5866,16 +5864,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /ember-tracked-storage-polyfill/1.0.0:
-    resolution: {integrity: sha512-eL7lZat68E6P/D7b9UoTB5bB5Oh/0aju0Z7PCMi3aTwhaydRaxloE7TGrTRYU+NdJuyNVZXeGyxFxn2frvd3TA==}
-    engines: {node: 12.* || >= 14}
-    dependencies:
-      ember-cli-babel: 7.26.11
-      ember-cli-htmlbars: 5.7.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /ember-try-config/4.0.0:
     resolution: {integrity: sha512-jAv7fqYJK7QYYekPc/8Nr7KOqDpv/asqM6F8xcRnbmf9UrD35BkSffY63qUuiD9e0aR5qiMNBIQzH8f65rGDqw==}

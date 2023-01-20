@@ -1,21 +1,24 @@
 import { ReactiveAdapter, ReactiveSignal } from '@data-eden/reactivity';
-import {
-  createStorage,
-  getValue,
-  setValue,
-} from 'ember-tracked-storage-polyfill';
+import { tracked } from '@glimmer/tracking';
+
+class Foo<T> {
+  @tracked value: T;
+
+  constructor(value: T) {
+    this.value = value;
+  }
+
+  read() {
+    return this.value;
+  }
+
+  write(v: T) {
+    this.value = v;
+  }
+}
 
 export const adapter: ReactiveAdapter = {
   create<T>(value: T): ReactiveSignal<T> {
-    const s = createStorage(value);
-
-    return {
-      read() {
-        return getValue(s);
-      },
-      write(v: T) {
-        setValue(s, v);
-      },
-    };
+    return new Foo(value);
   },
 };
