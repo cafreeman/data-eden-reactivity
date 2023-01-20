@@ -1,7 +1,6 @@
-import { buildCachedFetch } from '@data-eden/reactivity';
-import { adapter } from '@data-eden/react';
-import { buildCache } from '@data-eden/cache';
 import { buildFetch } from '@data-eden/network';
+import { adapter } from '@data-eden/react';
+import { buildCachedFetch } from '@data-eden/reactivity';
 
 async function loggerMiddleware(
   request: Request,
