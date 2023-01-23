@@ -1,0 +1,32 @@
+{
+  "name": "react-example",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@data-eden/cache": "^0.3.2",
+    "@data-eden/network": "^0.3.2",
+    "@data-eden/react": "workspace:*",
+    "@data-eden/reactivity": "workspace:*",
+    "@signalis/core": "^0.0.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react": "^3.0.1",
+    "miragejs": "^0.1.47",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.4"
+  },
+  "msw": {
+    "workerDirectory": "public"
+  }
+}
