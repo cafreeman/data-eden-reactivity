@@ -2,7 +2,7 @@
 
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
@@ -10,7 +10,7 @@ module.exports = {
       legacyDecorators: true,
     },
   },
-  plugins: ['ember'],
+  plugins: ['ember', '@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
@@ -24,15 +24,21 @@ module.exports = {
     // node files
     {
       files: [
-        './.eslintrc.js',
-        './.prettierrc.js',
-        './.template-lintrc.js',
-        './ember-cli-build.js',
-        './index.js',
-        './testem.js',
-        './blueprints/*/index.js',
-        './config/**/*.js',
-        './tests/dummy/config/**/*.js',
+        '.eslintrc.js',
+        '.prettierrc.js',
+        '.template-lintrc.js',
+        'ember-cli-build.js',
+        'ember-addon-main.js',
+        'testem.js',
+        'blueprints/*/index.js',
+        'config/**/*.js',
+        'tests/dummy/config/**/*.js',
+      ],
+      excludedFiles: [
+        'addon/**',
+        'addon-test-support/**',
+        'app/**',
+        'tests/dummy/app/**',
       ],
       parserOptions: {
         sourceType: 'script',
@@ -45,9 +51,13 @@ module.exports = {
       extends: ['plugin:node/recommended'],
     },
     {
-      // test files
+      // Test files:
       files: ['tests/**/*-test.{js,ts}'],
       extends: ['plugin:qunit/recommended'],
+    },
+    {
+      files: ['**/*.ts'],
+      extends: ['plugin:@typescript-eslint/recommended'],
     },
   ],
 };

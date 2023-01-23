@@ -1,6 +1,4 @@
-import { buildCachedFetch } from '@data-eden/reactivity';
-import { adapter } from '@data-eden/ember';
-import { buildCache } from '@data-eden/cache';
+import { buildCachedFetch } from '@data-eden/ember';
 import { buildFetch } from '@data-eden/network';
 
 async function loggerMiddleware(request, next) {
@@ -14,12 +12,4 @@ const customFetch = buildFetch([loggerMiddleware], {
   },
 });
 
-const cache = buildCache();
-
-console.log(adapter);
-
-export const cachedFetch = buildCachedFetch({
-  fetch: customFetch,
-  cache,
-  adapter,
-});
+export const cachedFetch = buildCachedFetch(customFetch);
