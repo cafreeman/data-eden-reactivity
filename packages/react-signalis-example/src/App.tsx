@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { buildCachedFetch } from './network';
+import { useCachedFetch } from './network';
 
 interface Person {
   name: string;
 }
-
-const useCachedFetch = buildCachedFetch();
 
 const DisplayPerson = () => {
   const { fetch, data: person, loading } = useCachedFetch<Person>();

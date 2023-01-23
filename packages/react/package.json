@@ -18,12 +18,18 @@
   "license": "ISC",
   "dependencies": {
     "@data-eden/reactivity": "workspace:*",
-    "@preact/signals-core": "^1.2.3"
+    "@preact/signals-core": "^1.2.3",
+    "@signalis/core": "^0.0.7",
+    "@types/react": "^18.0.27"
   },
   "devDependencies": {
     "@tsconfig/node-lts-strictest": "^18.12.1",
+    "react": "^18.2.0",
     "rimraf": "^4.1.0",
     "typescript": "^4.9.3",
     "vite": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
   }
 }

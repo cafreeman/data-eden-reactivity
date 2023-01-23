@@ -163,15 +163,21 @@ importers:
     specifiers:
       '@data-eden/reactivity': workspace:*
       '@preact/signals-core': ^1.2.3
+      '@signalis/core': ^0.0.7
       '@tsconfig/node-lts-strictest': ^18.12.1
+      '@types/react': ^18.0.27
+      react: ^18.2.0
       rimraf: ^4.1.0
       typescript: ^4.9.3
       vite: ^4.0.0
     dependencies:
       '@data-eden/reactivity': link:../core
       '@preact/signals-core': 1.2.3
+      '@signalis/core': 0.0.7
+      '@types/react': 18.0.27
     devDependencies:
       '@tsconfig/node-lts-strictest': 18.12.1
+      react: 18.2.0
       rimraf: 4.1.0
       typescript: 4.9.4
       vite: 4.0.4
@@ -212,8 +218,6 @@ importers:
       '@data-eden/cache': ^0.3.2
       '@data-eden/network': ^0.3.2
       '@data-eden/react': workspace:*
-      '@data-eden/reactivity': workspace:*
-      '@signalis/core': ^0.0.7
       '@types/node': ^18.11.18
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
@@ -227,8 +231,6 @@ importers:
       '@data-eden/cache': 0.3.2
       '@data-eden/network': 0.3.2
       '@data-eden/react': link:../react
-      '@data-eden/reactivity': link:../core
-      '@signalis/core': 0.0.7
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
@@ -2427,7 +2429,6 @@ packages:
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
-    dev: true
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
@@ -2453,7 +2454,6 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
-    dev: true
 
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
@@ -2473,7 +2473,6 @@ packages:
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
-    dev: true
 
   /@types/semver/7.3.13:
     resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
@@ -5109,7 +5108,6 @@ packages:
 
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
-    dev: true
 
   /cyclist/1.0.1:
     resolution: {integrity: sha512-NJGVKPS81XejHcLhaLJS7plab0fK3slPh11mESeeDq2W4ZI5kUKK/LRRdVDvjJseojbPB7ZwjnyOybg3Igea/A==}
@@ -10301,7 +10299,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /readable-stream/1.0.34:
     resolution: {integrity: sha512-ok1qVCJuRkNmvebYikljxJA/UEsKwLl2nI1OmaqAu4/UE+h0wKCHok4XkL/gvi39OacXvw59RJUOFUkDib2rHg==}
