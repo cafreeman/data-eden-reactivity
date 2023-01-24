@@ -1,10 +1,8 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/addon/
 /dist/
 /tmp/
-/commonjs/
 
 # dependencies
 /bower_components/

@@ -43,5 +43,5 @@ function fnFactory(
 }
 
 export function buildCachedFetch(fetch: DataEdenFetch) {
-  buildBaseCachedFetch(fetch, adapter, fnFactory);
+  return buildBaseCachedFetch(fetch, adapter, fnFactory);
 }
