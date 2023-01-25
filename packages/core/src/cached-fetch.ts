@@ -34,6 +34,7 @@ export function createHandler(): ProxyHandler<any> {
       if (prop === SIGNAL) {
         return target;
       }
+      console.log('prop', prop);
       const value = target.value;
       const result = Reflect.get(value, prop, receiver);
       return result;
@@ -60,6 +61,7 @@ export function buildCachedFetch<T>(
     hooks: {
       async commit(tx) {
         for await (let entry of tx.entries()) {
+          console.log('entry', entry);
           const [key, entity] = entry;
           let withSignal = signalCache.get(key);
 
@@ -79,15 +81,4 @@ export function buildCachedFetch<T>(
   });
 
   return fnFactory(fetch, cache, signalCache);
-
-  // return async function (input: RequestInfo | URL, init?: RequestInit | undefined) {
-  //   const key = getUrl(input);
-  //   const res = await fetch(input, init).then((res) => res.json());
-
-  //   const tx = await cache.beginTransaction();
-  //   tx.set(key, res);
-  //   await tx.commit();
-
-  //   return signalCache.get(key);
-  // };
 }

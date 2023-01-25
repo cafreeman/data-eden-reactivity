@@ -10,12 +10,14 @@ importers:
       '@data-eden/cache': 0.3.2
       '@data-eden/network': 0.3.2
       '@tsconfig/node-lts-strictest': ^18.12.1
+      lodash: ^4.17.21
       rimraf: ^4.1.0
       typescript: ^4.9.3
       vite: ^4.0.0
     dependencies:
       '@data-eden/cache': 0.3.2
       '@data-eden/network': 0.3.2
+      lodash: 4.17.21
     devDependencies:
       '@tsconfig/node-lts-strictest': 18.12.1
       rimraf: 4.1.0
@@ -165,7 +167,9 @@ importers:
       '@preact/signals-core': ^1.2.3
       '@signalis/core': ^0.0.7
       '@tsconfig/node-lts-strictest': ^18.12.1
+      '@types/lodash': ^4.14.191
       '@types/react': ^18.0.27
+      lodash: ^4.17.21
       react: ^18.2.0
       rimraf: ^4.1.0
       typescript: ^4.9.3
@@ -175,8 +179,10 @@ importers:
       '@preact/signals-core': 1.2.3
       '@signalis/core': 0.0.7
       '@types/react': 18.0.27
+      lodash: 4.17.21
     devDependencies:
       '@tsconfig/node-lts-strictest': 18.12.1
+      '@types/lodash': 4.14.191
       react: 18.2.0
       rimraf: 4.1.0
       typescript: 4.9.4
@@ -2412,6 +2418,10 @@ packages:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
       '@types/node': 18.11.18
+    dev: true
+
+  /@types/lodash/4.14.191:
+    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
     dev: true
 
   /@types/mime/3.0.1:

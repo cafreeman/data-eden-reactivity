@@ -1,11 +1,12 @@
 import type {
   DataEdenCache,
+  DataEdenFetch,
   ReactiveAdapter,
   ReactiveSignal,
   SignalCache,
   WithSignal,
 } from '@data-eden/reactivity';
-import { DataEdenFetch, SIGNAL, buildCachedFetch, getUrl } from '@data-eden/reactivity';
+import { SIGNAL, buildCachedFetch, parseEntities, handleResponse } from '@data-eden/reactivity';
 import { Reaction, createSignal } from '@signalis/core';
 import { useCallback, useReducer, useRef, useState } from 'react';
 
@@ -27,6 +28,10 @@ function safeIncrement(x: number) {
   return x + 1;
 }
 
+// function getKey(v: { id: string; __type: string }) {
+//   return `${v.__type}:${v.id}`;
+// }
+
 function fnFactory(
   fetch: DataEdenFetch,
   cache: DataEdenCache,
@@ -45,19 +50,13 @@ function fnFactory(
 
     const customFetch = useCallback(
       async (input: RequestInfo | URL, init?: RequestInit | undefined) => {
-        const key = getUrl(input);
         setLoading(true);
 
         try {
           const response = await fetch(input, init);
-
           const data = await response.json();
 
-          const tx = await cache.beginTransaction();
-          tx.set(key, data);
-          await tx.commit();
-
-          const withSignal = signalCache.get(key) as WithSignal<T>;
+          const withSignal = await handleResponse(cache, signalCache, data);
 
           if (!reactionRef.current) {
             reactionRef.current = new Reaction(function (this: Reaction) {
