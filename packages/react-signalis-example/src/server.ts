@@ -5,20 +5,23 @@ const petNames = ['hitch', 'dre', 'eazy', 'arya'];
 let petIndex = 0;
 
 export function makeServer() {
-  console.log('MAKE SERVER');
+  const ApplicationSerializer = RestSerializer.extend({
+    root: false,
+    embed: true,
+    keyForAttribute(attr) {
+      if (attr === '__type') {
+        return attr;
+      }
+
+      return attr;
+    },
+  });
+
   let server = createServer({
     serializers: {
-      person: RestSerializer.extend({
+      application: ApplicationSerializer,
+      person: ApplicationSerializer.extend({
         include: ['pets'],
-        embed: true,
-        root: false,
-        keyForAttribute(attr) {
-          if (attr === '__type') {
-            return attr;
-          }
-
-          return attr;
-        },
       }),
     },
 
@@ -68,10 +71,18 @@ export function makeServer() {
 
         const result = person.update(attrs);
 
-        petIndex = petIndex >= petNames.length - 1 ? 0 : petIndex + 1;
-        schema.pets.find(1).update({ name: petNames[petIndex] });
+        // petIndex = petIndex >= petNames.length - 1 ? 0 : petIndex + 1;
+        // schema.pets.find(1).update({ name: petNames[petIndex] });
 
         return result;
+      });
+
+      this.put('/pets/:id', (schema, request) => {
+        const id = request.params.id;
+        const attrs = JSON.parse(request.requestBody);
+        const pet = schema.pets.find(id);
+
+        return pet.update(attrs);
       });
     },
   });

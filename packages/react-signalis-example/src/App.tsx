@@ -14,16 +14,24 @@ interface Pet {
 
 const DisplayPets = ({ pets }: { pets: Array<Pet> }) => {
   return (
-    <ul>
-      {pets.map((pet) => {
-        return <DisplayPet key={pet.id} pet={pet} />;
-      })}
-    </ul>
+    <div className="border-2 rounded border-green-500 border-solid my-2 mx-2">
+      <p className="text-lg font-bold text-green-500">Display Pets List Component</p>
+      <ul>
+        {pets.map((pet) => {
+          return <DisplayPet key={pet.id} pet={pet} />;
+        })}
+      </ul>
+    </div>
   );
 };
 
 const DisplayPet = ({ pet }: { pet: Pet }) => {
-  return <li>{pet.name}</li>;
+  return (
+    <div className="border-2 rounded border-red-500 border-solid my-2 mx-2">
+      <p className="text-lg font-bold text-red-500">Display Pet Component</p>
+      <li>{pet.name}</li>
+    </div>
+  );
 };
 
 const DisplayPerson = () => {
@@ -34,10 +42,11 @@ const DisplayPerson = () => {
   }, []);
 
   const pets = person && person.pets;
+  console.log('person', person);
 
   return (
-    <div>
-      <h1>Display Person 1</h1>
+    <div className="border-2 rounded border-blue-500 border-solid my-2 mx-2">
+      <h1 className="text-lg font-bold text-blue-500">Display Person 1</h1>
       {loading && <span>Loading...</span>}
       {person && (
         <div>
@@ -71,10 +80,57 @@ const UpdatePerson = () => {
   }
 
   return (
-    <div>
-      <h1>Update Person 1</h1>
-      <input type="text" value={inputValue} onChange={handleInputChange} />
-      <button type="button" onClick={handleSubmit}>
+    <div className="border-2 rounded border-violet-500 border-solid my-2 mx-2">
+      <h1 className="text-lg font-bold text-violet-800">Update Person 1</h1>
+      <input
+        type="text"
+        className="border border-black rounded mr-1"
+        value={inputValue}
+        onChange={handleInputChange}
+      />
+      <button
+        type="button"
+        className="px-2 py-1 font-semibold text-sm bg-slate-500 text-white rounded-md shadow-sm opacity-100"
+        onClick={handleSubmit}
+      >
+        Submit
+      </button>
+    </div>
+  );
+};
+
+const UpdatePet = () => {
+  const { fetch } = useCachedFetch();
+
+  const [inputValue, setInputValue] = useState('');
+
+  function handleInputChange(e: React.FormEvent<HTMLInputElement>) {
+    setInputValue(e.currentTarget.value);
+  }
+
+  function handleSubmit() {
+    fetch('/api/pets/1', {
+      method: 'PUT',
+      body: JSON.stringify({ name: inputValue }),
+    }).then(() => {
+      setInputValue('');
+    });
+  }
+
+  return (
+    <div className="border-2 rounded border-amber-600 border-solid my-2 mx-2">
+      <h1 className="text-lg font-bold text-amber-600">Update Pet 1</h1>
+      <input
+        type="text"
+        className="border border-black rounded mr-1"
+        value={inputValue}
+        onChange={handleInputChange}
+      />
+      <button
+        type="button"
+        className="px-2 py-1 font-semibold text-sm bg-slate-500 text-white rounded-md shadow-sm opacity-100"
+        onClick={handleSubmit}
+      >
         Submit
       </button>
     </div>
@@ -83,9 +139,10 @@ const UpdatePerson = () => {
 
 function App() {
   return (
-    <div>
+    <div className="m-6">
       <DisplayPerson />
       <UpdatePerson />
+      <UpdatePet />
     </div>
   );
 }
