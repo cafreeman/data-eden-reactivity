@@ -6,7 +6,8 @@ import type {
   SignalCache,
   WithSignal,
 } from '@data-eden/reactivity';
-import { SIGNAL, buildCachedFetch, parseEntities, handleResponse } from '@data-eden/reactivity';
+import { traverse } from '@data-eden/reactivity';
+import { SIGNAL, buildCachedFetch, handleResponse } from '@data-eden/reactivity';
 import { Reaction, createSignal } from '@signalis/core';
 import { useCallback, useReducer, useRef, useState } from 'react';
 
@@ -56,16 +57,34 @@ function fnFactory(
           const response = await fetch(input, init);
           const data = await response.json();
 
-          const withSignal = await handleResponse(cache, signalCache, data);
+          const withSignal = (await handleResponse(cache, signalCache, data)) as WithSignal<T>;
 
           if (!reactionRef.current) {
-            reactionRef.current = new Reaction(function (this: Reaction) {
-              this.trap(() => {
-                withSignal[SIGNAL].value;
-                setResult(withSignal);
-                forceUpdate();
+            const reaction = new Reaction(() => {
+              setResult(withSignal);
+              forceUpdate();
+            });
+
+            reaction.trap(() => {
+              console.log('running trap');
+
+              traverse(withSignal[SIGNAL].value, (_key, value, _parent) => {
+                // DFS through the root object and if we find any other signals, we also subscribe
+                // to them so that deeply nested updates propagate through to React
+                if (value && value[SIGNAL]) {
+                  value[SIGNAL].value;
+                  return true;
+                }
+
+                if (Array.isArray(value)) {
+                  return true;
+                }
+
+                return false;
               });
             });
+
+            reactionRef.current = reaction;
             reactionRef.current.compute();
           }
           return withSignal;
