@@ -12,7 +12,6 @@
     "@data-eden/cache": "^0.3.0",
     "@data-eden/network": "^0.3.0",
     "@data-eden/react": "workspace:*",
-    "@data-eden/reactivity": "workspace:*",
     "@preact/signals-react": "^1.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
