@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@tsconfig/node-lts-strictest": "^18.12.1",
+    "@types/lodash": "^4.14.191",
     "rimraf": "^4.1.0",
     "typescript": "^4.9.3",
     "vite": "^4.0.0"

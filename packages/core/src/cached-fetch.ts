@@ -31,10 +31,11 @@ export function getUrl(input: RequestInfo | URL): string {
 export function createHandler(): ProxyHandler<any> {
   return {
     get(target, prop, receiver) {
+      // this is an escape hatch let us actually access the underlying signal, typically inside of
+      // the framework integration libraries
       if (prop === SIGNAL) {
         return target;
       }
-      console.log('prop', prop);
       const value = target.value;
       const result = Reflect.get(value, prop, receiver);
       return result;
@@ -49,6 +50,37 @@ export function createHandler(): ProxyHandler<any> {
   };
 }
 
+// function deepMerge(target: any, source: any): any {
+//   if (!source) {
+//     return structuredClone(target);
+//   }
+
+//   if (!target) {
+//     return structuredClone(source);
+//   }
+
+//   if (isObject(target) && isObject(source)) {
+//     for (const key in source) {
+//       if (isObject(source[key])) {
+//         if (!target[key]) Object.assign(target, { [key]: {} });
+//         deepMerge(target[key], source[key]);
+//       } else if (Array.isArray(source[key])) {
+//         if (!Array.isArray(target[key])) target[key] = [];
+//         target[key] = [...target[key], ...source[key]];
+//       } else {
+//         Object.assign(target, { [key]: source[key] });
+//       }
+//     }
+//   }
+
+//   // "immutable" lololololol
+//   return structuredClone(target);
+// }
+
+// function isObject(item: any) {
+//   return item && typeof item === 'object' && !Array.isArray(item);
+// }
+
 export function buildCachedFetch<T>(
   fetch: DataEdenFetch,
   adapter: ReactiveAdapter,
@@ -59,9 +91,12 @@ export function buildCachedFetch<T>(
 
   const cache = buildCache({
     hooks: {
+      // entitymergeStrategy(_id, { entity }, current, _tx) {
+      //   const result = deepMerge(current || {}, entity);
+      //   return result;
+      // },
       async commit(tx) {
-        for await (let entry of tx.entries()) {
-          console.log('entry', entry);
+        for await (let entry of tx.localEntries()) {
           const [key, entity] = entry;
           let withSignal = signalCache.get(key);
 
