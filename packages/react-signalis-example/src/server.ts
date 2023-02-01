@@ -1,9 +1,5 @@
 import { belongsTo, createServer, hasMany, Model, RestSerializer } from 'miragejs';
 
-const petNames = ['hitch', 'dre', 'eazy', 'arya'];
-
-let petIndex = 0;
-
 export function makeServer() {
   const ApplicationSerializer = RestSerializer.extend({
     root: false,
@@ -20,14 +16,19 @@ export function makeServer() {
   let server = createServer({
     serializers: {
       application: ApplicationSerializer,
+
       person: ApplicationSerializer.extend({
-        include: ['pets'],
+        include: ['pets', 'car'],
       }),
     },
 
     models: {
       person: Model.extend({
         pets: hasMany(),
+        car: belongsTo(),
+      }),
+      car: Model.extend({
+        person: belongsTo(),
       }),
       pet: Model.extend({
         person: belongsTo(),
@@ -53,6 +54,14 @@ export function makeServer() {
         name: 'dre',
         person,
       });
+
+      server.create('car', {
+        id: '1',
+        __type: 'car',
+        make: 'Ford',
+        model: 'Mustang',
+        person,
+      });
     },
 
     routes() {
@@ -69,12 +78,7 @@ export function makeServer() {
         const attrs = JSON.parse(request.requestBody);
         const person = schema.people.find(id);
 
-        const result = person.update(attrs);
-
-        // petIndex = petIndex >= petNames.length - 1 ? 0 : petIndex + 1;
-        // schema.pets.find(1).update({ name: petNames[petIndex] });
-
-        return result;
+        return person.update(attrs);
       });
 
       this.put('/pets/:id', (schema, request) => {
@@ -83,6 +87,20 @@ export function makeServer() {
         const pet = schema.pets.find(id);
 
         return pet.update(attrs);
+      });
+
+      this.get('/cars/:id', (schema, request) => {
+        const id = request.params.id;
+        const car = schema.cars.find(id);
+        return car;
+      });
+
+      this.put('/cars/:id', (schema, request) => {
+        const id = request.params.id;
+        const attrs = JSON.parse(request.requestBody);
+        const car = schema.cars.find(id);
+
+        return car.update(attrs);
       });
     },
   });
