@@ -1,8 +1,22 @@
-import type { buildCache } from '@data-eden/cache';
+import { buildCache } from '@data-eden/cache';
 import type { buildFetch } from '@data-eden/network';
-import type { ReactiveAdapter } from './adapter.js';
+import type { ReactiveAdapter, ReactiveSignal } from './adapter.js';
 
-function getUrl(input: RequestInfo | URL): string {
+export const SIGNAL = Symbol('data-eden-signal');
+
+export type WithSignal<T> = T & {
+  [SIGNAL]: ReactiveSignal<T>;
+};
+export type DataEdenFetch = ReturnType<typeof buildFetch>;
+export type DataEdenCache = ReturnType<typeof buildCache>;
+export type SignalCache = Map<string, WithSignal<any>>;
+export type FunctionFactory<T> = (
+  fetch: DataEdenFetch,
+  cache: DataEdenCache,
+  signalCache: SignalCache
+) => T;
+
+export function getUrl(input: RequestInfo | URL): string {
   if (typeof input === 'string') {
     return input;
   }
@@ -14,67 +28,61 @@ function getUrl(input: RequestInfo | URL): string {
   return input.toString();
 }
 
-const SIGNAL = Symbol('data-eden-signal');
-
-function createHandler(): ProxyHandler<any> {
+export function createHandler(): ProxyHandler<any> {
   return {
     get(target, prop, receiver) {
-      const result = Reflect.get(target, prop, receiver);
-      if (prop !== SIGNAL) {
-        const s = target[SIGNAL];
-        s.read();
+      // this is an escape hatch let us actually access the underlying signal, typically inside of
+      // the framework integration libraries
+      if (prop === SIGNAL) {
+        return target;
       }
+      const value = target.value;
+      const result = Reflect.get(value, prop, receiver);
       return result;
     },
 
     set(target, prop, value) {
-      const result = Reflect.set(target, prop, value);
-      if (prop !== SIGNAL) {
-        console.log('writing signal');
-        const s = target[SIGNAL];
-        s.write(s.read() === 0 ? 1 : 0);
-      }
+      const innerValue = target.value;
+      const result = Reflect.set(innerValue, prop, value);
+      target.value = innerValue;
       return result;
     },
   };
 }
 
-interface CachedFetchArgs {
-  fetch: ReturnType<typeof buildFetch>;
-  cache: ReturnType<typeof buildCache>;
-  adapter: ReactiveAdapter;
-}
-
-export function buildCachedFetch({ fetch, cache, adapter }: CachedFetchArgs) {
-  const SignalCache = new Map<string, any>();
-
+export function buildCachedFetch<T>(
+  fetch: DataEdenFetch,
+  adapter: ReactiveAdapter,
+  fnFactory: FunctionFactory<T>
+) {
+  const signalCache = new Map<string, any>();
   const handler = createHandler();
 
-  return async function (input: RequestInfo | URL, init?: RequestInit | undefined) {
-    const key = getUrl(input);
-    const res = await fetch(input, init).then((res) => res.json());
+  const cache = buildCache({
+    hooks: {
+      // entitymergeStrategy(_id, { entity }, current, _tx) {
+      //   const result = deepMerge(current || {}, entity);
+      //   return result;
+      // },
+      async commit(tx) {
+        for await (let entry of tx.localEntries()) {
+          const [key, entity] = entry;
+          let withSignal = signalCache.get(key);
 
-    const tx = await cache.beginTransaction();
-    tx.set(key, res);
-    await tx.commit();
+          // Entity can also be string | number so we need to make sure it's actually an object here
+          if (entity !== null && typeof entity === 'object') {
+            if (withSignal === undefined) {
+              withSignal = new Proxy(adapter.create(entity), handler);
 
-    const cacheResult = await cache.get(key);
+              signalCache.set(key, withSignal);
+            } else {
+              Object.assign(withSignal, entity);
+            }
+          }
+        }
+      },
+    },
+  });
 
-    let withSignal = SignalCache.get(key);
-
-    if (withSignal === undefined) {
-      const base = {
-        ...cacheResult,
-        [SIGNAL]: adapter.create(1),
-      };
-      withSignal = new Proxy(base, handler);
-
-      SignalCache.set(key, withSignal);
-    } else {
-      Object.assign(withSignal, cacheResult);
-      console.log('withSignal', withSignal);
-    }
-
-    return withSignal;
-  };
+  return fnFactory(fetch, cache, signalCache);
 }

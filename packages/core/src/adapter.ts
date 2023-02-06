@@ -1,6 +1,5 @@
 export interface ReactiveSignal<T> {
-  read(): T;
-  write(value: T): void;
+  value: T;
 }
 
 export interface ReactiveAdapter {

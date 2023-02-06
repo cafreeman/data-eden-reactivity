@@ -1,6 +1,5 @@
 import { buildFetch } from '@data-eden/network';
-import { adapter } from '@data-eden/react';
-import { buildCachedFetch } from '@data-eden/reactivity';
+import { buildUseCachedFetch } from '@data-eden/react';
 
 async function loggerMiddleware(
   request: Request,
@@ -12,4 +11,4 @@ async function loggerMiddleware(
 
 const customFetch = buildFetch([loggerMiddleware]);
 
-export const cachedFetch = buildCachedFetch({ fetch: customFetch, adapter });
+export const useCachedFetch = buildUseCachedFetch(customFetch);
