@@ -50,37 +50,6 @@ export function createHandler(): ProxyHandler<any> {
   };
 }
 
-// function deepMerge(target: any, source: any): any {
-//   if (!source) {
-//     return structuredClone(target);
-//   }
-
-//   if (!target) {
-//     return structuredClone(source);
-//   }
-
-//   if (isObject(target) && isObject(source)) {
-//     for (const key in source) {
-//       if (isObject(source[key])) {
-//         if (!target[key]) Object.assign(target, { [key]: {} });
-//         deepMerge(target[key], source[key]);
-//       } else if (Array.isArray(source[key])) {
-//         if (!Array.isArray(target[key])) target[key] = [];
-//         target[key] = [...target[key], ...source[key]];
-//       } else {
-//         Object.assign(target, { [key]: source[key] });
-//       }
-//     }
-//   }
-
-//   // "immutable" lololololol
-//   return structuredClone(target);
-// }
-
-// function isObject(item: any) {
-//   return item && typeof item === 'object' && !Array.isArray(item);
-// }
-
 export function buildCachedFetch<T>(
   fetch: DataEdenFetch,
   adapter: ReactiveAdapter,
